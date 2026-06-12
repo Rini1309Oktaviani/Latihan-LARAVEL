@@ -1,26 +1,28 @@
 <?php
 
-namespace Database\Factories;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use App\Models\Department;
-use App\Models\Lecturer;
-use Illuminate\Database\Eloquent\Factories\Factory;
-
-/**
- * @extends Factory<Lecturer>
- */
-class LecturerFactory extends Factory
+return new class extends Migration
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
+     * Run the migrations.
      */
-    public function definition(): array
+    public function up(): void
     {
-        return [
-            'name' => fake()->name(),
-            'department_id' => Department::inRandomOrder()->first()->id,
-        ];
+        Schema::create('departments', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
     }
-}
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('departments');
+    }
+};

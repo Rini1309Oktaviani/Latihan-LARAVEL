@@ -12,9 +12,21 @@ class LecturerController extends Controller
      */
     public function index()
     {
-         return view('lecturer.index', [
+          $lecturers =Lecturer::orderBy('id','desc');
+    $keyword = request('keyword');
+    if($keyword) {
+        $lecturers->where('name','like','%'.$keyword.'%');
+    }
+
+    $department_id = request('department_id');
+    if($department_id) {
+        $lecturers->where('department_id', $department_id);
+    }
+       return view('lecturer.index', [
             'title' => 'Lecturer',
             'lecturers' => Lecturer::orderBy('id','desc')->get(),
+            'departments' => Department::orderBy('id','asc')->get(),
+            'lecturers' => $lecturers->paginate(5)->withQueryString(),
             ]);
     }
 
